@@ -21,9 +21,6 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDto> getClientePorId(@PathVariable Long id){
         Cliente cliente = clienteService.buscarClientePorId(id);
-        if(cliente == null){
-            return ResponseEntity.notFound().build();
-        }
         ClienteResponseDto responseDto = ClienteMapper.clienteToClienteResponseDto(cliente);
         return ResponseEntity.ok(responseDto);
     }
@@ -31,9 +28,6 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<List<ClienteResponseDto>> getTodosLosClientes(){
         List<Cliente> clientes = clienteService.obtenerTodosLosClientes();
-        if(clientes.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
         List<ClienteResponseDto> responseDtos = ClienteMapper.clienteToClienteResponseDtoList(clientes);
         return ResponseEntity.ok(responseDtos);
     }

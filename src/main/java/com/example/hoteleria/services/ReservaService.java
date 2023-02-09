@@ -1,6 +1,7 @@
 package com.example.hoteleria.services;
 
 import com.example.hoteleria.entities.Reserva;
+import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,7 @@ public class ReservaService {
     public Reserva obtenerReservaPorId(Long id){
         Optional<Reserva> reserva = reservaRepository.findById(id);
         if(reserva.isEmpty()){
-            //TODO lanzar excepcion en lugar de retornar null
-            return null;
+            throw new EntityNotFoundException("No existe reserva para el id: " + id.toString());
         }
         return reserva.get();
     }
@@ -32,8 +32,7 @@ public class ReservaService {
     public List<Reserva> obtenerTodasLasReservas(){
         List<Reserva> reservas = reservaRepository.findAll();
         if(reservas.isEmpty()){
-            //TODO lanzar excepcion en lugar de retornar null
-            return null;
+            throw new EntityNotFoundException("No existen reservas registradas.");
         }
         return reservas;
     }
@@ -47,9 +46,7 @@ public class ReservaService {
     public List<Reserva> reservasDelDia(){
         List<Reserva> reservas = reservaRepository.findAllByFechaIngreso(LocalDate.now());
         if(reservas.isEmpty()){
-            //TODO lanzar excepcion en lugar de retornar null
-            //404 not found
-            return null;
+            throw new EntityNotFoundException("No existen reservas para hoy");
         }
         return reservas;
     }

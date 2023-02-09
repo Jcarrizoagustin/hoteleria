@@ -1,6 +1,7 @@
 package com.example.hoteleria.services;
 
 import com.example.hoteleria.entities.Cliente;
+import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,7 @@ public class ClienteService {
     public Cliente buscarClientePorId(Long id){
         Optional<Cliente> buscado = clienteRepository.findById(id);
         if(buscado.isEmpty()){
-            //TODO lanzar excepcion en lugar de retornar null
-            return null;
+            throw new EntityNotFoundException("No existe cliente para el id: " + id.toString());
         }
         return buscado.get();
     }
@@ -31,7 +31,7 @@ public class ClienteService {
         if(clienteRepository.existsById(id)){
             clienteRepository.deleteById(id);
         }else{
-            //TODO lanzar excepcion si no existe el cliente para el id proporcionado
+            throw new EntityNotFoundException("No existe cliente para el id: " + id.toString());
         }
     }
 
@@ -40,10 +40,15 @@ public class ClienteService {
             eliminarClientePorId(cliente.getId());
         }else{
             //TODO lanzar excepcion si el id es nulo
+            throw new EntityNotFoundException("El id es nulo");
         }
     }
 
     public List<Cliente> obtenerTodosLosClientes(){
-        return clienteRepository.findAll();
+        List<Cliente> clientes = clienteRepository.findAll();
+        if(clientes.isEmpty()){
+            throw new EntityNotFoundException("No existen clientes registrados");
+        }
+        return clientes;
     }
 }

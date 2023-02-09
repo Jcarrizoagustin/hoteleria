@@ -20,9 +20,6 @@ public class HabitacionController {
     @GetMapping
     public ResponseEntity<List<HabitacionResponseDto>> getTodasLasHabitaciones(){
         List<Habitacion> habitaciones = habitacionService.obtenerTodasLasHabitaciones();
-        if(habitaciones ==null){
-            return ResponseEntity.notFound().build();
-        }
         List<HabitacionResponseDto> responseDtoList = HabitacionMapper.habitacionToHabitacionResponseDtoList(habitaciones);
         return ResponseEntity.ok(responseDtoList);
     }
