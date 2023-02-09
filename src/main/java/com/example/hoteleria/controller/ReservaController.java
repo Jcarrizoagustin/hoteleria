@@ -46,4 +46,10 @@ public class ReservaController {
         ReservaResponseDto responseDto = ReservaMapper.reservaToReservaResponseDto(creada);
         return ResponseEntity.ok(responseDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteReserva(@PathVariable Long id){
+        reservaService.eliminarReservaPorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

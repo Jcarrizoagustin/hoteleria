@@ -1,5 +1,6 @@
 package com.example.hoteleria.services;
 
+import com.example.hoteleria.entities.Cliente;
 import com.example.hoteleria.entities.Reserva;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.repository.ReservaRepository;
@@ -16,6 +17,9 @@ public class ReservaService {
 
     @Autowired
     private ReservaRepository reservaRepository;
+
+    @Autowired
+    private ClienteService clienteService;
 
     public Reserva obtenerReservaPorId(Long id){
         Optional<Reserva> reserva = reservaRepository.findById(id);
@@ -51,7 +55,13 @@ public class ReservaService {
         return reservas;
     }
 
+    public void eliminarReservaPorId(Long id){
+        Optional<Reserva> reserva = reservaRepository.findById(id);
+        if(reserva.isEmpty()){
+            throw new EntityNotFoundException("No existe reserva para el id: " + id.toString());
+        }
+        reservaRepository.deleteById(id);
+    }
 
 
-    //TODO crear metodo eliminarReservaPorId()
 }

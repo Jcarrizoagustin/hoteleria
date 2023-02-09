@@ -33,4 +33,12 @@ public class HabitacionService {
         }
         return habitacion.get();
     }
+
+    public void eliminarHabitacionPorId(Long id){
+        Optional<Habitacion> habitacion = habitacionRepository.findById(id);
+        if(habitacion.isEmpty()){
+            throw new EntityNotFoundException("No existe la habitacion para el id: " + id.toString());
+        }
+        habitacionRepository.delete(habitacion.get());
+    }
 }

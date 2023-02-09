@@ -39,4 +39,10 @@ public class ClienteController {
         ClienteResponseDto responseDto = ClienteMapper.clienteToClienteResponseDto(creado);
         return ResponseEntity.ok(responseDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCliente(@PathVariable Long id){
+        clienteService.eliminarClientePorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

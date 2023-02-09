@@ -23,7 +23,7 @@ public class Cliente {
     @Column(nullable = false,unique = true)
     private String telefono;
 
-    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.REMOVE,orphanRemoval = true)
     private List<Reserva> reservas = new ArrayList<>();
 
     public void agregarReserva(Reserva reserva){

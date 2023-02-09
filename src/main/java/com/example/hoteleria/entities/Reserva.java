@@ -18,7 +18,7 @@ public class Reserva {
     @ManyToOne
     private Cliente cliente;
 
-    @ManyToMany(cascade = {CascadeType.ALL,CascadeType.MERGE})
+    @ManyToMany//(cascade = {CascadeType.ALL,CascadeType.MERGE})
     private List<Habitacion> habitaciones = new ArrayList<>();
 
     @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE)

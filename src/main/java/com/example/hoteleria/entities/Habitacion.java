@@ -17,11 +17,11 @@ public class Habitacion {
 
     private BigDecimal precio;
 
-    @OneToMany(mappedBy = "habitacion",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "habitacion",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
     private List<Descripcion> descripciones = new ArrayList<>();
 
 
-    @ManyToMany(mappedBy = "habitaciones")
+    @ManyToMany(mappedBy = "habitaciones",cascade = CascadeType.REMOVE)
     private List<Reserva> reservas = new ArrayList<>();
 
     public void agregarDescripcion(Descripcion descripcion){

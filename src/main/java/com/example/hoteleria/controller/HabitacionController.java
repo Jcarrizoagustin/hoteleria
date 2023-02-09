@@ -31,4 +31,10 @@ public class HabitacionController {
         HabitacionResponseDto responseDto = HabitacionMapper.habitacionToHabitacionResponseDto(creada);
         return ResponseEntity.ok(responseDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteHabitacion(@PathVariable Long id){
+        habitacionService.eliminarHabitacionPorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }
