@@ -3,12 +3,16 @@ package com.example.hoteleria.controller;
 import com.example.hoteleria.dtos.habitacion.HabitacionCreateDto;
 import com.example.hoteleria.dtos.habitacion.HabitacionResponseDto;
 import com.example.hoteleria.entities.Habitacion;
+import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.mappers.habitacion.HabitacionMapper;
 import com.example.hoteleria.services.HabitacionService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,5 +40,16 @@ public class HabitacionController {
     public ResponseEntity deleteHabitacion(@PathVariable Long id){
         habitacionService.eliminarHabitacionPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<HabitacionResponseDto>> getHabitacionesDisponibles(@JsonFormat(pattern = "dd-MM-yyyy") @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaIngreso,
+                                                                                  @JsonFormat(pattern = "dd-MM-yyyy") @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaSalida){
+        if(fechaSalida.compareTo(fechaIngreso) <= 0){
+            throw new ConflictException("La fecha de salida no puede ser menor o igual a la fecha de entrada");
+        }
+        List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDisponibles(fechaIngreso,fechaSalida);
+        List<HabitacionResponseDto> responseDtos = HabitacionMapper.habitacionToHabitacionResponseDtoList(habitaciones);
+        return ResponseEntity.ok(responseDtos);
     }
 }

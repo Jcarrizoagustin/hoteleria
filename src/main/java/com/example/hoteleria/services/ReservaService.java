@@ -1,7 +1,9 @@
 package com.example.hoteleria.services;
 
 import com.example.hoteleria.entities.Cliente;
+import com.example.hoteleria.entities.Habitacion;
 import com.example.hoteleria.entities.Reserva;
+import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ReservaService {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private HabitacionService habitacionService;
+
     public Reserva obtenerReservaPorId(Long id){
         Optional<Reserva> reserva = reservaRepository.findById(id);
         if(reserva.isEmpty()){
@@ -29,7 +34,12 @@ public class ReservaService {
         return reserva.get();
     }
 
-    public Reserva guardarReserva(Reserva reserva){
+    public Reserva guardarReserva(LocalDate fechaIngreso,LocalDate fechaSalida,Reserva reserva){
+        for(Habitacion habitacion : reserva.getHabitaciones()){
+            if(habitacionService.verificarHabitacionDisponible(fechaIngreso,fechaSalida,habitacion)){
+                throw new ConflictException("La habitacion con id: " + habitacion.getId().toString() + " ya se encuentra reservada");
+            }
+        }
         return reservaRepository.save(reserva);
     }
 
