@@ -10,9 +10,6 @@ public class DatabaseRunner implements CommandLineRunner {
     private ClienteRepository clienteRepository;
     @Override
     public void run(String... args) throws Exception {
-        if(clienteRepository.count() == 0){
 
-
-        }
     }
 }

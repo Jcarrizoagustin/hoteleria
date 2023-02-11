@@ -4,7 +4,6 @@ import com.example.hoteleria.entities.Habitacion;
 import com.example.hoteleria.entities.Reserva;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.repository.HabitacionRepository;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +40,15 @@ public class HabitacionService {
         return resultado;
     }
 
-    private boolean verificarSiNoEstaReservada(LocalDate fechaIngreso, LocalDate fechaSalida, Reserva reserva){
-        return (fechaSalida.compareTo(reserva.getFechaIngreso()) <= 0 || fechaIngreso.compareTo(reserva.getFechaSalida()) >= 0);
+    private boolean estaReservada(LocalDate fechaIngreso, LocalDate fechaSalida, Reserva reserva){
+        return !(fechaSalida.compareTo(reserva.getFechaIngreso()) <= 0 || fechaIngreso.compareTo(reserva.getFechaSalida()) >= 0);
     }
 
     public boolean verificarHabitacionDisponible(LocalDate fechaIngreso, LocalDate fechaSalida, Habitacion habitacion){
         for(Reserva reserva : habitacion.getReservas()){
-            if(!verificarSiNoEstaReservada(fechaIngreso,fechaSalida,reserva)){
-                return false;
-            }
+           if(this.estaReservada(fechaIngreso,fechaSalida,reserva)){
+               return false;
+           }
         }
         return true;
     }

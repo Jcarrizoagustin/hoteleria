@@ -34,12 +34,8 @@ public class ReservaService {
         return reserva.get();
     }
 
-    public Reserva guardarReserva(LocalDate fechaIngreso,LocalDate fechaSalida,Reserva reserva){
-        for(Habitacion habitacion : reserva.getHabitaciones()){
-            if(habitacionService.verificarHabitacionDisponible(fechaIngreso,fechaSalida,habitacion)){
-                throw new ConflictException("La habitacion con id: " + habitacion.getId().toString() + " ya se encuentra reservada");
-            }
-        }
+    public Reserva guardarReserva(Reserva reserva){
+
         return reservaRepository.save(reserva);
     }
 

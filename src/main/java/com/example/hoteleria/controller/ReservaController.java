@@ -42,7 +42,7 @@ public class ReservaController {
         if(reserva == null){
             throw new ConflictException("Conflicto al mapear la reserva.");
         }
-        Reserva creada = reservaService.guardarReserva(reserva.getFechaIngreso(),reserva.getFechaSalida(), reserva);
+        Reserva creada = reservaService.guardarReserva(reserva);
         ReservaResponseDto responseDto = ReservaMapper.reservaToReservaResponseDto(creada);
         return ResponseEntity.ok(responseDto);
     }

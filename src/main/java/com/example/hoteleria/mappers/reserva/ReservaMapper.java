@@ -7,6 +7,7 @@ import com.example.hoteleria.entities.Cliente;
 import com.example.hoteleria.entities.Habitacion;
 import com.example.hoteleria.entities.Reserva;
 import com.example.hoteleria.exceptions.BadRequestException;
+import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.mappers.habitacion.HabitacionMapper;
 import com.example.hoteleria.repository.ClienteRepository;
 import com.example.hoteleria.repository.HabitacionRepository;
@@ -35,12 +36,20 @@ public class ReservaMapper {
         if(dto.getFechaSalida().compareTo(dto.getFechaIngreso()) <= 0){
             throw new BadRequestException("La fecha de salida no puede ser menor o igual a la fecha de ingreso.");
         }
+
         Cliente cliente = clienteService.buscarClientePorId(dto.getIdCliente());
+        if(dto.getIdHabitaciones().isEmpty()){
+            throw new BadRequestException("No se especifico la/s habitacion/es a reservar");
+        }
         List<Habitacion> habitaciones = dto.getIdHabitaciones().stream()
                         .map(id -> habitacionService.obtenerHabitacionPorId(id))
                         .collect(Collectors.toList());
         for(Habitacion habitacion : habitaciones){
-            reserva.agregarHabitacion(habitacion);
+            if(habitacionService.verificarHabitacionDisponible(dto.getFechaIngreso(),dto.getFechaSalida(),habitacion)){
+                reserva.agregarHabitacion(habitacion);
+            }else{
+                throw new ConflictException("La habitacion con id: " + habitacion.getId().toString() + " ya se encuentra reservada");
+            }
         }
         reserva.setFechaIngreso(dto.getFechaIngreso());
         reserva.setFechaSalida(dto.getFechaSalida());
