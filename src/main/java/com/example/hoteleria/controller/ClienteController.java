@@ -17,26 +17,29 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private ClienteMapper clienteMapper;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDto> getClientePorId(@PathVariable Long id){
         Cliente cliente = clienteService.buscarClientePorId(id);
-        ClienteResponseDto responseDto = ClienteMapper.clienteToClienteResponseDto(cliente);
+        ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(cliente);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping
     public ResponseEntity<List<ClienteResponseDto>> getTodosLosClientes(){
         List<Cliente> clientes = clienteService.obtenerTodosLosClientes();
-        List<ClienteResponseDto> responseDtos = ClienteMapper.clienteToClienteResponseDtoList(clientes);
+        List<ClienteResponseDto> responseDtos = clienteMapper.clienteToClienteResponseDtoList(clientes);
         return ResponseEntity.ok(responseDtos);
     }
 
     @PostMapping
     public ResponseEntity<ClienteResponseDto> postCliente(@RequestBody ClienteCreateDto dto){
-        Cliente cliente = ClienteMapper.clienteCreateDtoToCliente(dto);
+        Cliente cliente = clienteMapper.clienteCreateDtoToCliente(dto);
         Cliente creado = clienteService.guardarCliente(cliente);
-        ClienteResponseDto responseDto = ClienteMapper.clienteToClienteResponseDto(creado);
+        ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(creado);
         return ResponseEntity.ok(responseDto);
     }
 

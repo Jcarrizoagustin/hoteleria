@@ -1,9 +1,7 @@
 package com.example.hoteleria.entities;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,11 @@ public class Cliente {
     @Column(nullable = false,unique = true)
     private String telefono;
 
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Rol> roles = new ArrayList<>();
+
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.REMOVE,orphanRemoval = true)
     private List<Reserva> reservas = new ArrayList<>();
 
@@ -34,6 +37,16 @@ public class Cliente {
     public void eliminarReserva(Reserva reserva){
         this.reservas.remove(reserva);
         reserva.setCliente(null);
+    }
+
+    public void agregarRol(Rol rol){
+        this.roles.add(rol);
+        rol.getClientes().add(this);
+    }
+
+    public void eliminarRol(Rol rol){
+        this.roles.remove(rol);
+        rol.getClientes().remove(this);
     }
 
 

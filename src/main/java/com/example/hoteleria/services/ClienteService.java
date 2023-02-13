@@ -52,5 +52,13 @@ public class ClienteService {
         return clientes;
     }
 
+    public Cliente obtenerClientePorEmail(String email){
+        Optional<Cliente> cliente = clienteRepository.findByEmail(email);
+        if(cliente.isEmpty()){
+            throw new EntityNotFoundException("No se encuentra el cliente con email: " + email);
+        }
+        return cliente.get();
+    }
+
 
 }
