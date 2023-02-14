@@ -16,11 +16,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/clientes").permitAll()
+                .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/habitaciones").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/v1/clientes","/api/v1/reservas","/api/v1/habitaciones").hasAuthority("ADMIN")
+                .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/clientes","/api/v1/reservas").hasAuthority("ADMIN")
                 .and()
-                .httpBasic().and().build();
+                .authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/v1/clientes","/api/v1/habitaciones").hasAuthority("ADMIN")
+                .and()
+                .authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/v1/reservas").hasAuthority("USER")
+                .and()
+                .authorizeHttpRequests().requestMatchers(HttpMethod.DELETE,"/api/v1/clientes/**","/api/v1/habitaciones/**").hasAuthority("ADMIN")
+                .and()
+                .authorizeHttpRequests().requestMatchers(HttpMethod.DELETE,"/api/v1/reservas/**").hasAuthority("USER")
+                .and()
+                .httpBasic()
+                .and()
+                .build();
     }
 
     @Bean

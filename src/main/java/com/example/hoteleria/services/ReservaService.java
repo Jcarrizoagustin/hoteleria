@@ -69,5 +69,8 @@ public class ReservaService {
         reservaRepository.deleteById(id);
     }
 
-
+    public boolean existeReservaParaEmail(Long id, String email){
+        Reserva reserva = obtenerReservaPorId(id);
+        return reserva.getCliente().getEmail().equals(email);
+    }
 }

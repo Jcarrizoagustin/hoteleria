@@ -5,11 +5,12 @@ import com.example.hoteleria.dtos.reserva.ReservaCreateDto;
 import com.example.hoteleria.dtos.reserva.ReservaResponseDto;
 import com.example.hoteleria.entities.Reserva;
 import com.example.hoteleria.exceptions.ConflictException;
-import com.example.hoteleria.exceptions.EntityNotFoundException;
+import com.example.hoteleria.exceptions.ForbiddenException;
 import com.example.hoteleria.mappers.reserva.ReservaMapper;
 import com.example.hoteleria.services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +50,11 @@ public class ReservaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteReserva(@PathVariable Long id){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        if(!reservaService.existeReservaParaEmail(id,email)){
+           throw new ForbiddenException("El cliente con email: "+ email + " no es propietario de esta reserva");
+
+        }
         reservaService.eliminarReservaPorId(id);
         return ResponseEntity.noContent().build();
     }
