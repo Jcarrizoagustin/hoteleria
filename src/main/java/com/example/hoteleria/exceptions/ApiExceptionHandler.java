@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.naming.AuthenticationException;
+
 @RestControllerAdvice
 public class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -19,8 +21,7 @@ public class ApiExceptionHandler {
             BadRequestException.class,
             MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class,
-            MethodArgumentTypeMismatchException.class,
-            BadCredentialsException.class
+            MethodArgumentTypeMismatchException.class
     })
     @ResponseBody
     public MensajeError badRequest(HttpServletRequest request, Exception exception){
@@ -52,7 +53,9 @@ public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({
-            UnauthorizedException.class
+            UnauthorizedException.class,
+            AuthenticationException.class,
+            BadCredentialsException.class
     })
     @ResponseBody
     public MensajeError unauthorized(HttpServletRequest request, Exception exception){

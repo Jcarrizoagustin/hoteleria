@@ -18,9 +18,7 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/clientes").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/v1/clientes").hasAuthority("ADMIN")
-                .and()
-                .authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/v1/habitaciones").hasAuthority("ADMIN")
+                .authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/v1/clientes","/api/v1/reservas","/api/v1/habitaciones").hasAuthority("ADMIN")
                 .and()
                 .httpBasic().and().build();
     }

@@ -15,6 +15,7 @@ import com.example.hoteleria.services.ClienteService;
 import com.example.hoteleria.services.HabitacionService;
 import com.example.hoteleria.services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,8 +37,9 @@ public class ReservaMapper {
         if(dto.getFechaSalida().compareTo(dto.getFechaIngreso()) <= 0){
             throw new BadRequestException("La fecha de salida no puede ser menor o igual a la fecha de ingreso.");
         }
-
-        Cliente cliente = clienteService.buscarClientePorId(dto.getIdCliente());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("Email:" + email);
+        Cliente cliente = clienteService.obtenerClientePorEmail(email);
         if(dto.getIdHabitaciones().isEmpty()){
             throw new BadRequestException("No se especifico la/s habitacion/es a reservar");
         }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class ReservaCreateDto {
-    private Long idCliente;
+    //private Long idCliente;
     private List<Long> idHabitaciones;
     @JsonFormat(pattern ="dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE)
