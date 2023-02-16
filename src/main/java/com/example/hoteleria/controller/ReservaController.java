@@ -8,6 +8,7 @@ import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.ForbiddenException;
 import com.example.hoteleria.mappers.reserva.ReservaMapper;
 import com.example.hoteleria.services.ReservaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,7 @@ public class ReservaController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservaResponseDto> postReserva(@RequestBody ReservaCreateDto dto){
+    public ResponseEntity<ReservaResponseDto> postReserva(@Valid @RequestBody ReservaCreateDto dto){
         Reserva reserva = reservaMapper.reservaCreateDtoToReserva(dto);
         if(reserva == null){
             throw new ConflictException("Conflicto al mapear la reserva.");

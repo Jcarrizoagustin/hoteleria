@@ -3,10 +3,14 @@ package com.example.hoteleria.controller;
 import com.example.hoteleria.dtos.habitacion.HabitacionCreateDto;
 import com.example.hoteleria.dtos.habitacion.HabitacionResponseDto;
 import com.example.hoteleria.entities.Habitacion;
+import com.example.hoteleria.exceptions.BadRequestException;
 import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.mappers.habitacion.HabitacionMapper;
 import com.example.hoteleria.services.HabitacionService;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +33,7 @@ public class HabitacionController {
     }
 
     @PostMapping
-    public ResponseEntity<HabitacionResponseDto> postHabitacion(@RequestBody HabitacionCreateDto dto){
+    public ResponseEntity<HabitacionResponseDto> postHabitacion(@Valid @RequestBody HabitacionCreateDto dto){
         Habitacion habitacion = HabitacionMapper.habitacionCreateDtoToHabitacion(dto);
         Habitacion creada = habitacionService.guardarHabitacion(habitacion);
         HabitacionResponseDto responseDto = HabitacionMapper.habitacionToHabitacionResponseDto(creada);
@@ -47,6 +51,9 @@ public class HabitacionController {
                                                                                   @JsonFormat(pattern = "dd-MM-yyyy") @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaSalida){
         if(fechaSalida.compareTo(fechaIngreso) <= 0){
             throw new ConflictException("La fecha de salida no puede ser menor o igual a la fecha de entrada");
+        }
+        if(fechaIngreso.compareTo(LocalDate.now()) < 0 ){
+            throw new BadRequestException("Las fechas no pueden ser menores al dia de hoy");
         }
         List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDisponibles(fechaIngreso,fechaSalida);
         List<HabitacionResponseDto> responseDtos = HabitacionMapper.habitacionToHabitacionResponseDtoList(habitaciones);

@@ -5,6 +5,7 @@ import com.example.hoteleria.dtos.cliente.ClienteResponseDto;
 import com.example.hoteleria.entities.Cliente;
 import com.example.hoteleria.mappers.cliente.ClienteMapper;
 import com.example.hoteleria.services.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteResponseDto> postCliente(@RequestBody ClienteCreateDto dto){
+    public ResponseEntity<ClienteResponseDto> postCliente(@Valid @RequestBody ClienteCreateDto dto){
         Cliente cliente = clienteMapper.clienteCreateDtoToCliente(dto);
         Cliente creado = clienteService.guardarCliente(cliente);
         ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(creado);

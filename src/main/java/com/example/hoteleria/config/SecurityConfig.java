@@ -16,7 +16,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/habitaciones").permitAll()
+                .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/habitaciones","/api/v1/habitaciones/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/api/v1/clientes","/api/v1/reservas").hasAuthority("ADMIN")
                 .and()

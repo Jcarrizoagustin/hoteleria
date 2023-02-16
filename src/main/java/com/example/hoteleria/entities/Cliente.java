@@ -20,7 +20,7 @@ public class Cliente {
     private String email;
     @Column(nullable = false,unique = true)
     private String telefono;
-
+    @Column(nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
