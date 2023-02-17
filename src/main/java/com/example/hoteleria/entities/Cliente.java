@@ -23,7 +23,7 @@ public class Cliente {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)
     private List<Rol> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.REMOVE,orphanRemoval = true)

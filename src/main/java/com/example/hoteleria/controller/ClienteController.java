@@ -49,4 +49,12 @@ public class ClienteController {
         clienteService.eliminarClientePorId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponseDto> updateCliente(@PathVariable Long id, @Valid @RequestBody ClienteCreateDto dto){
+        Cliente cliente = clienteMapper.clienteCreateDtoToCliente(dto);
+        Cliente actualizado = clienteService.actualizarCliente(id,cliente);
+        ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(actualizado);
+        return ResponseEntity.ok(responseDto);
+    }
 }
