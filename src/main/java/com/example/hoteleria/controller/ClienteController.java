@@ -28,14 +28,12 @@ public class ClienteController {
         ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(cliente);
         return ResponseEntity.ok(responseDto);
     }
-
     @GetMapping
     public ResponseEntity<List<ClienteResponseDto>> getTodosLosClientes(){
         List<Cliente> clientes = clienteService.obtenerTodosLosClientes();
         List<ClienteResponseDto> responseDtos = clienteMapper.clienteToClienteResponseDtoList(clientes);
         return ResponseEntity.ok(responseDtos);
     }
-
     @PostMapping
     public ResponseEntity<ClienteResponseDto> postCliente(@Valid @RequestBody ClienteCreateDto dto){
         Cliente cliente = clienteMapper.clienteCreateDtoToCliente(dto);

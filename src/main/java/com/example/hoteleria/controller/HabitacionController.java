@@ -9,8 +9,6 @@ import com.example.hoteleria.mappers.habitacion.HabitacionMapper;
 import com.example.hoteleria.services.HabitacionService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +20,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/habitaciones")
 public class HabitacionController {
+
+
     @Autowired
     private HabitacionService habitacionService;
-
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<HabitacionResponseDto>> getTodasLasHabitaciones(){
         List<Habitacion> habitaciones = habitacionService.obtenerTodasLasHabitaciones();
