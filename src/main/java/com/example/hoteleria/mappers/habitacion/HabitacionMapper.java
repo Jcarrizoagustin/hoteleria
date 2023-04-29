@@ -17,6 +17,9 @@ public class HabitacionMapper {
     public static Habitacion habitacionCreateDtoToHabitacion(HabitacionCreateDto dto){
         Habitacion habitacion = new Habitacion();
         habitacion.setCapacidad(dto.getCapacidad());
+        habitacion.setNombre(dto.getNombre());
+        habitacion.setUrlImg(dto.getUrlImg());
+        habitacion.setCantidadCamas(dto.getCantidadCamas());
         if(!dto.getDescripciones().isEmpty()){
             for(DescripcionCreateDto create : dto.getDescripciones()){
                 Descripcion descripcion = DescripcionMapper.descripcionCreateDtoToDescripcion(create);
@@ -32,6 +35,9 @@ public class HabitacionMapper {
         responseDto.setId(habitacion.getId());
         responseDto.setCapacidad(habitacion.getCapacidad());
         responseDto.setPrecio(habitacion.getPrecio().toString());
+        responseDto.setCantidadCamas(habitacion.getCantidadCamas());
+        responseDto.setUrlImg(habitacion.getUrlImg());
+        responseDto.setNombre(habitacion.getNombre());
         if(!habitacion.getDescripciones().isEmpty()){
             List<DescripcionResponseDto> descripcionResponseDtos = habitacion.getDescripciones()
                     .stream()

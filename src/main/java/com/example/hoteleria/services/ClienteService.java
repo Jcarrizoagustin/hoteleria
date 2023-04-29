@@ -2,12 +2,14 @@ package com.example.hoteleria.services;
 
 import com.example.hoteleria.dtos.cliente.ClienteCreateDto;
 import com.example.hoteleria.entities.Cliente;
+import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.exceptions.UnauthorizedException;
 import com.example.hoteleria.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-
+    private BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
     public Cliente guardarCliente(Cliente cliente){
         return clienteRepository.save(cliente);
     }
@@ -43,7 +45,6 @@ public class ClienteService {
         if(cliente.getId() != null){
             eliminarClientePorId(cliente.getId());
         }else{
-            //TODO lanzar excepcion si el id es nulo
             throw new EntityNotFoundException("El id es nulo");
         }
     }
@@ -81,4 +82,16 @@ public class ClienteService {
 
     }
 
+    public Cliente clienteIsLogin(String email, String password) {
+        Optional<Cliente> cliente = clienteRepository.findByEmail(email);
+        if(cliente.isEmpty()){
+            throw new EntityNotFoundException("No existe un usuario registrado para el mail:" + email);
+        }
+        if(encode.matches(password,cliente.get().getPassword())){
+            return cliente.get();
+        }else{
+            throw new ConflictException("Contraseña incorrecta");
+        }
+
+    }
 }

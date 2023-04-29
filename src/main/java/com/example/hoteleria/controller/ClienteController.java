@@ -2,9 +2,13 @@ package com.example.hoteleria.controller;
 
 import com.example.hoteleria.dtos.cliente.ClienteCreateDto;
 import com.example.hoteleria.dtos.cliente.ClienteResponseDto;
+import com.example.hoteleria.dtos.reserva.ReservaResponseDto;
 import com.example.hoteleria.entities.Cliente;
+import com.example.hoteleria.entities.Reserva;
 import com.example.hoteleria.mappers.cliente.ClienteMapper;
+import com.example.hoteleria.mappers.reserva.ReservaMapper;
 import com.example.hoteleria.services.ClienteService;
+import com.example.hoteleria.services.ReservaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteMapper clienteMapper;
+
+    @Autowired
+    private ReservaService reservaService;
 
 
     @GetMapping("/{id}")
@@ -54,5 +61,15 @@ public class ClienteController {
         Cliente actualizado = clienteService.actualizarCliente(id,cliente);
         ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(actualizado);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/reservas")
+    public ResponseEntity<List<ReservaResponseDto>> getReservasByClient(){
+        List<Reserva> list = reservaService.obtenerReservasPorClienteLogueado();
+        if(list.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        List<ReservaResponseDto> responseDtos = ReservaMapper.reservaToReservaResponseDtoList(list);
+        return ResponseEntity.ok(responseDtos);
     }
 }

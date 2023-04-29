@@ -29,6 +29,14 @@ public class HabitacionService {
         return habitaciones;
     }
 
+    public List<Habitacion> obtenerTodasLasHabitacionesDelDia(){
+        List<Habitacion> habitaciones = habitacionRepository.findAll();
+        if(habitaciones.isEmpty()){
+            throw new EntityNotFoundException("No existen habitaciones registradas.");
+        }
+        return habitaciones;
+    }
+
     public List<Habitacion> obtenerHabitacionesDisponibles(LocalDate fechaIngreso, LocalDate fechaSalida){
         List<Habitacion> todasLasHabitaciones = obtenerTodasLasHabitaciones();
         List<Habitacion> resultado = todasLasHabitaciones.stream()

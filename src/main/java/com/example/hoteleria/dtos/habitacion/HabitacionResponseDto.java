@@ -9,7 +9,10 @@ import java.util.List;
 public class HabitacionResponseDto {
 
     private Long id;
+    private String nombre;
     private Integer capacidad;
+    private Integer cantidadCamas;
+    private String urlImg;
     private List<DescripcionResponseDto> descripciones;
     private String precio;
 }

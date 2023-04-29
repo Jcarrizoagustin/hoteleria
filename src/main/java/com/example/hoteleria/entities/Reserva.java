@@ -39,7 +39,7 @@ public class Reserva {
         habitacion.getReservas().remove(this);
     }
 
-    public void calcularPrecioTotal(int cantidadDeDias){
+    public void calcularPrecioTotal(long cantidadDeDias){
         BigDecimal total = new BigDecimal(0.00);
         for(Habitacion habitacion : this.habitaciones){
             total = total.add(habitacion.getPrecio());

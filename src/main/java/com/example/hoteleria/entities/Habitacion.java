@@ -13,7 +13,13 @@ public class Habitacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nombre;
+
     private Integer capacidad;
+
+    private Integer cantidadCamas;
+
+    private String urlImg;
 
     private BigDecimal precio;
 

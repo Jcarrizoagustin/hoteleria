@@ -1,5 +1,6 @@
 package com.example.hoteleria.services;
 
+import com.example.hoteleria.dtos.reserva.ReservaResponseDto;
 import com.example.hoteleria.entities.Cliente;
 import com.example.hoteleria.entities.Habitacion;
 import com.example.hoteleria.entities.Reserva;
@@ -7,10 +8,12 @@ import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,10 +50,8 @@ public class ReservaService {
         return reservas;
     }
 
-    public int obtenerCantidadDeDias(Reserva reserva){
-        return Period.between(reserva.getFechaIngreso(),
-                reserva.getFechaSalida())
-                .getDays();
+    public long obtenerCantidadDeDias(Reserva reserva){
+        return ChronoUnit.DAYS.between(reserva.getFechaIngreso(),reserva.getFechaSalida());
     }
 
     public List<Reserva> reservasDelDia(){
@@ -73,4 +74,13 @@ public class ReservaService {
         Reserva reserva = obtenerReservaPorId(id);
         return reserva.getCliente().getEmail().equals(email);
     }
+
+    public List<Reserva> obtenerReservasPorClienteLogueado() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Cliente cliente = clienteService.obtenerClientePorEmail(email);
+        List<Reserva> reservas = reservaRepository.findAllByCliente(cliente);
+        return reservas;
+    }
+
+
 }

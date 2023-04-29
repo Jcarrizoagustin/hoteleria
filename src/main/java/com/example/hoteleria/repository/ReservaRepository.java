@@ -11,6 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva,Long> {
-    //List<Reserva> findAllByCliente(Cliente cliente);
+
     List<Reserva> findAllByFechaIngreso(LocalDate fechaIngreso);
+
+    List<Reserva> findAllByCliente(Cliente cliente);
 }

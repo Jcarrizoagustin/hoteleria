@@ -47,8 +47,8 @@ public class HabitacionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<HabitacionResponseDto>> getHabitacionesDisponibles(@JsonFormat(pattern = "dd-MM-yyyy") @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaIngreso,
-                                                                                  @JsonFormat(pattern = "dd-MM-yyyy") @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaSalida){
+    public ResponseEntity<List<HabitacionResponseDto>> getHabitacionesDisponibles(@JsonFormat(pattern = "yyyy-MM-dd") @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaIngreso,
+                                                                                  @JsonFormat(pattern = "yyyy-MM-dd") @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fechaSalida){
         if(fechaSalida.compareTo(fechaIngreso) <= 0){
             throw new ConflictException("La fecha de salida no puede ser menor o igual a la fecha de entrada");
         }

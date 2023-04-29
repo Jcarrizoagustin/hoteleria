@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class ReservaMapper {
             throw new BadRequestException("La fecha de salida no puede ser menor o igual a la fecha de ingreso.");
         }
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("Email:" + email);
+        //System.out.println("Email:" + email);
         Cliente cliente = clienteService.obtenerClientePorEmail(email);
         if(dto.getIdHabitaciones().isEmpty()){
             throw new BadRequestException("No se especifico la/s habitacion/es a reservar");
@@ -55,7 +56,7 @@ public class ReservaMapper {
         }
         reserva.setFechaIngreso(dto.getFechaIngreso());
         reserva.setFechaSalida(dto.getFechaSalida());
-        int dias = reservaService.obtenerCantidadDeDias(reserva);
+        long dias = reservaService.obtenerCantidadDeDias(reserva);
         reserva.calcularPrecioTotal(dias);
         cliente.agregarReserva(reserva);
         return reserva;
@@ -71,8 +72,8 @@ public class ReservaMapper {
                 .habitacionToHabitacionResponseDtoList(reserva.getHabitaciones());
         responseDto.setHabitaciones(habitacionesDtos);
         responseDto.setPrecioTotal(reserva.getPrecio().toString());
-        responseDto.setFechaIngreso(reserva.getFechaIngreso().toString());
-        responseDto.setFechaSalida(reserva.getFechaSalida().toString());
+        responseDto.setFechaIngreso(reserva.getFechaIngreso().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        responseDto.setFechaSalida(reserva.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         return responseDto;
     }
 

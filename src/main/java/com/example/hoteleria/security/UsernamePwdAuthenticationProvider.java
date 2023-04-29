@@ -9,8 +9,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class UsernamePwdAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private ClienteService clienteService;
@@ -22,7 +23,7 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
-        String password =authentication.getCredentials().toString();
+        String password = authentication.getCredentials().toString();
         Cliente cliente = clienteService.obtenerClientePorEmail(username);
         if(passwordEncoder.matches(password,cliente.getPassword())){
             return new UsernamePasswordAuthenticationToken(username,password,cliente.getRoles());

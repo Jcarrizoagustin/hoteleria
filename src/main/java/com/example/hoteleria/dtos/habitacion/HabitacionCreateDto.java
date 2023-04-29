@@ -11,10 +11,13 @@ import java.util.List;
 
 @Data
 public class HabitacionCreateDto {
-    @Min(value = 1,message = "La capacidad debe ser minimo para 1 persona")
+    @Min(value = 2,message = "La capacidad debe ser minimo para 2 personas")
     @Positive(message = "La capacidad no puede ser negativa")
     @NotNull(message = "La capacidad no puede ser nula")
     private Integer capacidad;
+    private String nombre;
+    private Integer cantidadCamas;
+    private String urlImg;
     @Positive(message = "El precio no pude ser negativo")
     private Double precio;
     private List<DescripcionCreateDto> descripciones;
