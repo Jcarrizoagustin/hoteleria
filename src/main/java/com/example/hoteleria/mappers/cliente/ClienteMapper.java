@@ -2,6 +2,7 @@ package com.example.hoteleria.mappers.cliente;
 
 import com.example.hoteleria.dtos.cliente.ClienteCreateDto;
 import com.example.hoteleria.dtos.cliente.ClienteResponseDto;
+import com.example.hoteleria.dtos.cliente.ClienteUpdateDto;
 import com.example.hoteleria.entities.Cliente;
 import com.example.hoteleria.entities.Rol;
 import com.example.hoteleria.repository.RolRepository;
@@ -59,5 +60,15 @@ public class ClienteMapper {
                 .map(cliente -> clienteToClienteResponseDto(cliente))
                 .collect(Collectors.toList());
         return listadoDtos;
+    }
+
+    public Cliente clienteUpdateDtoToCliente(ClienteUpdateDto dto) {
+        Cliente cliente = new Cliente();
+        cliente.setNombre(dto.getNombre());
+        cliente.setApellido(dto.getApellido());
+        cliente.setEmail(dto.getEmail());
+        cliente.setTelefono(dto.getTelefono());
+        cliente.setPassword(dto.getPassword());
+        return cliente;
     }
 }

@@ -2,6 +2,7 @@ package com.example.hoteleria.controller;
 
 import com.example.hoteleria.dtos.cliente.ClienteCreateDto;
 import com.example.hoteleria.dtos.cliente.ClienteResponseDto;
+import com.example.hoteleria.dtos.cliente.ClienteUpdateDto;
 import com.example.hoteleria.dtos.reserva.ReservaResponseDto;
 import com.example.hoteleria.entities.Cliente;
 import com.example.hoteleria.entities.Reserva;
@@ -55,10 +56,10 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDto> updateCliente(@PathVariable Long id, @Valid @RequestBody ClienteCreateDto dto){
-        Cliente cliente = clienteMapper.clienteCreateDtoToCliente(dto);
-        Cliente actualizado = clienteService.actualizarCliente(id,cliente);
+    @PutMapping
+    public ResponseEntity<ClienteResponseDto> updateCliente(@Valid @RequestBody ClienteUpdateDto dto){
+        Cliente cliente = clienteMapper.clienteUpdateDtoToCliente(dto);
+        Cliente actualizado = clienteService.actualizarCliente(cliente);
         ClienteResponseDto responseDto = clienteMapper.clienteToClienteResponseDto(actualizado);
         return ResponseEntity.ok(responseDto);
     }

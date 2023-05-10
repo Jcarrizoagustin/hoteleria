@@ -16,12 +16,12 @@ public class ReservaCreateDto {
     //private Long idCliente;
     @Size(min = 1,message = "Se debe agregar al menos una habitacion para reservar")
     private List<@Positive(message = "Los id de habitaciones deben ser positivos") Long> idHabitaciones;
-    @JsonFormat(pattern ="dd-MM-yyyy")
-    @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE)
     @FutureOrPresent(message = "La fecha de ingreso no puede ser menor al dia de hoy")
     private LocalDate fechaIngreso;
-    @JsonFormat(pattern ="dd-MM-yyyy")
-    @DateTimeFormat(pattern = "dd-MM-yyyy",iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE)
     @Future(message = "La fecha de salida no puede ser menor o igual al dia de hoy")
     private LocalDate fechaSalida;
 

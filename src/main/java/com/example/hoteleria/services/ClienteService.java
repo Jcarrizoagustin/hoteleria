@@ -20,6 +20,8 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+
+
     private BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
     public Cliente guardarCliente(Cliente cliente){
         return clienteRepository.save(cliente);
@@ -65,21 +67,17 @@ public class ClienteService {
         return cliente.get();
     }
 
-    public Cliente actualizarCliente(Long id, Cliente dto){
-        Cliente cliente = this.buscarClientePorId(id);
-        String email = cliente.getEmail();
-        if(SecurityContextHolder.getContext().getAuthentication().getName().equals(email)){
-            cliente.setNombre(dto.getNombre());
-            cliente.setApellido(dto.getApellido());
-            cliente.setEmail(dto.getEmail());
-            cliente.setTelefono(dto.getTelefono());
-            cliente.setPassword(dto.getPassword());
-            cliente.setRoles(dto.getRoles());
-            return clienteRepository.save(cliente);
-        }else{
-            throw new UnauthorizedException("No tiene permitido actualizar la informacion de otro cliente");
+    public Cliente actualizarCliente(Cliente dto){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Cliente cliente = this.obtenerClientePorEmail(email);
+        if(!encode.matches(dto.getPassword(), cliente.getPassword())){
+            throw new BadCredentialsException("Contraseña incorrecta");
         }
-
+        cliente.setNombre(dto.getNombre());
+        cliente.setApellido(dto.getApellido());
+        cliente.setEmail(dto.getEmail());
+        cliente.setTelefono(dto.getTelefono());
+        return clienteRepository.save(cliente);
     }
 
     public Cliente clienteIsLogin(String email, String password) {
