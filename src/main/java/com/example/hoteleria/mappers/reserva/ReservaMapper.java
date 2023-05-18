@@ -77,7 +77,7 @@ public class ReservaMapper {
         return responseDto;
     }
 
-    public static List<ReservaResponseDto> reservaToReservaResponseDtoList(List<Reserva> reservas){
+    public List<ReservaResponseDto> reservaToReservaResponseDtoList(List<Reserva> reservas){
         List<ReservaResponseDto> responseDtos = reservas.stream()
                 .map(reserva -> reservaToReservaResponseDto(reserva))
                 .collect(Collectors.toList());

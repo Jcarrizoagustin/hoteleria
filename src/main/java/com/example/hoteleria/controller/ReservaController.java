@@ -8,12 +8,16 @@ import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.ForbiddenException;
 import com.example.hoteleria.mappers.reserva.ReservaMapper;
 import com.example.hoteleria.services.ReservaService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,7 +38,17 @@ public class ReservaController {
     @GetMapping
     public ResponseEntity<List<ReservaResponseDto>> getTodasLasReservas(){
         List<Reserva> reservas = reservaService.obtenerTodasLasReservas();
-        List<ReservaResponseDto> responseDtos = ReservaMapper.reservaToReservaResponseDtoList(reservas);
+        List<ReservaResponseDto> responseDtos = reservaMapper.reservaToReservaResponseDtoList(reservas);
+        return ResponseEntity.ok(responseDtos);
+    }
+
+    @GetMapping("/hoy")
+    public ResponseEntity<List<ReservaResponseDto>> getReservasDelDia(){
+        List<Reserva> reservasDelDia = reservaService.reservasDelDia();
+        if(reservasDelDia.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        List<ReservaResponseDto> responseDtos = reservaMapper.reservaToReservaResponseDtoList(reservasDelDia);
         return ResponseEntity.ok(responseDtos);
     }
 
@@ -47,6 +61,16 @@ public class ReservaController {
         Reserva creada = reservaService.guardarReserva(reserva);
         ReservaResponseDto responseDto = ReservaMapper.reservaToReservaResponseDto(creada);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ReservaResponseDto>> getReservasPorFechaDeIngreso(@JsonFormat(pattern = "yyyy-MM-dd") @DateTimeFormat(pattern = "yyyy-MM-dd",iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate fecha){
+        List<Reserva> reservas = reservaService.obtenerReservasParaUnaFechaDada(fecha);
+        if(reservas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        List<ReservaResponseDto> responseDtos = reservaMapper.reservaToReservaResponseDtoList(reservas);
+        return ResponseEntity.ok(responseDtos);
     }
 
     @DeleteMapping("/{id}")

@@ -2,6 +2,7 @@ package com.example.hoteleria.services;
 
 import com.example.hoteleria.dtos.cliente.ClienteCreateDto;
 import com.example.hoteleria.entities.Cliente;
+import com.example.hoteleria.entities.Rol;
 import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
 import com.example.hoteleria.exceptions.UnauthorizedException;
@@ -90,6 +91,14 @@ public class ClienteService {
         }else{
             throw new ConflictException("Contraseña incorrecta");
         }
+    }
 
+    public static boolean clienteIsAdmin(Cliente cliente){
+        for(Rol rol : cliente.getRoles()){
+            if(rol.getName().toString().equalsIgnoreCase("admin")){
+                return true;
+            }
+        }
+        return false;
     }
 }

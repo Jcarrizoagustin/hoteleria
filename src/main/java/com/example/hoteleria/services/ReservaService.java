@@ -56,9 +56,6 @@ public class ReservaService {
 
     public List<Reserva> reservasDelDia(){
         List<Reserva> reservas = reservaRepository.findAllByFechaIngreso(LocalDate.now());
-        if(reservas.isEmpty()){
-            throw new EntityNotFoundException("No existen reservas para hoy");
-        }
         return reservas;
     }
 
@@ -83,4 +80,7 @@ public class ReservaService {
     }
 
 
+    public List<Reserva> obtenerReservasParaUnaFechaDada(LocalDate fecha) {
+        return reservaRepository.findAllByFechaIngreso(fecha);
+    }
 }

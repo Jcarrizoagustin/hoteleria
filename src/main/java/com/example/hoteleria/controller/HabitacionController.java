@@ -1,6 +1,7 @@
 package com.example.hoteleria.controller;
 
 import com.example.hoteleria.dtos.habitacion.HabitacionCreateDto;
+import com.example.hoteleria.dtos.habitacion.HabitacionEditDto;
 import com.example.hoteleria.dtos.habitacion.HabitacionResponseDto;
 import com.example.hoteleria.entities.Habitacion;
 import com.example.hoteleria.exceptions.BadRequestException;
@@ -58,5 +59,20 @@ public class HabitacionController {
         List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDisponibles(fechaIngreso,fechaSalida);
         List<HabitacionResponseDto> responseDtos = HabitacionMapper.habitacionToHabitacionResponseDtoList(habitaciones);
         return ResponseEntity.ok(responseDtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HabitacionResponseDto> getHabitacionPorId(@PathVariable Long id){
+        Habitacion habitacion = habitacionService.obtenerHabitacionPorId(id);
+        HabitacionResponseDto responseDto = HabitacionMapper.habitacionToHabitacionResponseDto(habitacion);
+        return ResponseEntity.ok(responseDto);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<HabitacionResponseDto> editHabitacion(@PathVariable Long id, @RequestBody HabitacionEditDto dto){
+        Habitacion habitacion = habitacionService.editar(id,dto);
+        HabitacionResponseDto responseDto = HabitacionMapper.habitacionToHabitacionResponseDto(habitacion);
+        return ResponseEntity.ok(responseDto);
     }
 }

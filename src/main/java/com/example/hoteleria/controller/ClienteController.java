@@ -29,6 +29,9 @@ public class ClienteController {
     @Autowired
     private ReservaService reservaService;
 
+    @Autowired
+    private ReservaMapper reservaMapper;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDto> getClientePorId(@PathVariable Long id){
@@ -68,9 +71,9 @@ public class ClienteController {
     public ResponseEntity<List<ReservaResponseDto>> getReservasByClient(){
         List<Reserva> list = reservaService.obtenerReservasPorClienteLogueado();
         if(list.isEmpty()){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
-        List<ReservaResponseDto> responseDtos = ReservaMapper.reservaToReservaResponseDtoList(list);
+        List<ReservaResponseDto> responseDtos = reservaMapper.reservaToReservaResponseDtoList(list);
         return ResponseEntity.ok(responseDtos);
     }
 }
