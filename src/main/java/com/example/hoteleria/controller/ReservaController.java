@@ -38,8 +38,12 @@ public class ReservaController {
     @GetMapping
     public ResponseEntity<List<ReservaResponseDto>> getTodasLasReservas(){
         List<Reserva> reservas = reservaService.obtenerTodasLasReservas();
-        List<ReservaResponseDto> responseDtos = reservaMapper.reservaToReservaResponseDtoList(reservas);
-        return ResponseEntity.ok(responseDtos);
+        if(reservas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }else{
+            List<ReservaResponseDto> responseDtos = reservaMapper.reservaToReservaResponseDtoList(reservas);
+            return ResponseEntity.ok(responseDtos);
+        }
     }
 
     @GetMapping("/hoy")

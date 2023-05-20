@@ -45,9 +45,6 @@ public class ReservaService {
 
     public List<Reserva> obtenerTodasLasReservas(){
         List<Reserva> reservas = reservaRepository.findAll();
-        if(reservas.isEmpty()){
-            throw new EntityNotFoundException("No existen reservas registradas.");
-        }
         return reservas;
     }
 

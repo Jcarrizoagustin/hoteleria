@@ -67,6 +67,7 @@ public class ReservaMapper {
         String nombreCliente = reserva.getCliente().getApellido() + " " +reserva.getCliente().getNombre();
         responseDto.setNombreCliente(nombreCliente);
         responseDto.setEmailCliente(reserva.getCliente().getEmail());
+        responseDto.setTelefonoCliente(reserva.getCliente().getTelefono());
         responseDto.setId(reserva.getId());
         List<HabitacionResponseDto> habitacionesDtos = HabitacionMapper
                 .habitacionToHabitacionResponseDtoList(reserva.getHabitaciones());
