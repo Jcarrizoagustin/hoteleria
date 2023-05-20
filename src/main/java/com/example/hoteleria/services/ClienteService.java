@@ -93,7 +93,7 @@ public class ClienteService {
         }
     }
 
-    public static boolean clienteIsAdmin(Cliente cliente){
+    public boolean clienteIsAdmin(Cliente cliente){
         for(Rol rol : cliente.getRoles()){
             if(rol.getName().toString().equalsIgnoreCase("admin")){
                 return true;

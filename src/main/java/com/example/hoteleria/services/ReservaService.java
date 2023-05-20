@@ -6,6 +6,7 @@ import com.example.hoteleria.entities.Habitacion;
 import com.example.hoteleria.entities.Reserva;
 import com.example.hoteleria.exceptions.ConflictException;
 import com.example.hoteleria.exceptions.EntityNotFoundException;
+import com.example.hoteleria.exceptions.UnauthorizedException;
 import com.example.hoteleria.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,12 +60,18 @@ public class ReservaService {
         return reservas;
     }
 
-    public void eliminarReservaPorId(Long id){
+    public void eliminarReservaPorId(Long id,String email){
         Optional<Reserva> reserva = reservaRepository.findById(id);
         if(reserva.isEmpty()){
             throw new EntityNotFoundException("No existe reserva para el id: " + id.toString());
         }
-        reservaRepository.deleteById(id);
+        Cliente user = clienteService.obtenerClientePorEmail(email);
+        if(clienteService.clienteIsAdmin(user) || this.existeReservaParaEmail(id,email)){
+            reservaRepository.deleteById(id);
+        }else{
+            throw new UnauthorizedException("No estas autorizado");
+        }
+
     }
 
     public boolean existeReservaParaEmail(Long id, String email){

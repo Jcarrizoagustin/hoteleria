@@ -76,11 +76,7 @@ public class ReservaController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteReserva(@PathVariable Long id){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!reservaService.existeReservaParaEmail(id,email)){
-           throw new ForbiddenException("El cliente con email: "+ email + " no es propietario de esta reserva");
-
-        }
-        reservaService.eliminarReservaPorId(id);
+        reservaService.eliminarReservaPorId(id,email);
         return ResponseEntity.noContent().build();
     }
 }
